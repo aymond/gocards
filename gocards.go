@@ -1,6 +1,7 @@
 package main
 
 import (
+	"encoding/json"
 	"fmt"
 	"math/rand"
 )
@@ -22,9 +23,12 @@ type Deck struct {
 func main() {
 
 	var deck2 Deck
-	deck2.initialise("Blackjack")
+	deck2.initialize("Blackjack")
 	deck2.shuffle()
 	deck2.dealToPlayers(5, 2)
+	c := deck2.dealCard()
+	p, _ := json.Marshal(c)
+	fmt.Println("Dealt:" + string(p))
 }
 
 func new(deckName string) (deck Deck) {
@@ -49,9 +53,9 @@ func new(deckName string) (deck Deck) {
 	return
 }
 
-// Initialise returns an instance of a Deck. This method should return a game deck.
+// Initialize returns an instance of a Deck. This method should return a game deck.
 // Currently hardcoded a classic card deck.
-func (d *Deck) initialise(deckName string) {
+func (d *Deck) initialize(deckName string) {
 	fmt.Println("Creating Deck.")
 
 	d.Name = deckName
@@ -93,7 +97,6 @@ func (d *Deck) shuffle() {
 
 // Deal the number of cards specified in n
 func (d *Deck) deal(n int) {
-
 	for i := 0; i < n; i++ {
 		fmt.Println(d.Cards[i].Value + " of " + d.Cards[i].Suit)
 	}
@@ -107,4 +110,12 @@ func (d *Deck) dealToPlayers(n, p int) {
 		fmt.Println(d.Cards[i].Value + " of " + d.Cards[i].Suit)
 	}
 	return
+}
+
+// DealCard returns a card from the deck, removing it from the source
+// deck, and returns the new size of the deck.
+func (d *Deck) dealCard() Card {
+	var c Card
+	c, d.Cards = d.Cards[len(d.Cards)-1], d.Cards[:len(d.Cards)-1]
+	return c
 }
