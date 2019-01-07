@@ -21,7 +21,6 @@ type Deck struct {
 }
 
 func main() {
-
 	var deck2 Deck
 	deck2.initialize("Blackjack")
 	deck2.shuffle()
@@ -29,27 +28,19 @@ func main() {
 	c := deck2.dealCard()
 	p, _ := json.Marshal(c)
 	fmt.Println("Dealt:" + string(p))
+	var player1Deck Deck
+	player1Deck = new("Aymon")
+	player1Deck.debug()
+	player1Deck.addCard(c)
+	player1Deck.debug()
+	test, test2 := player1Deck.contains(c)
+	fmt.Println("Card in Deck: ", test)
+	fmt.Println("Position: ", test2)
 }
 
 func new(deckName string) (deck Deck) {
-	var cards []Card
-
 	deck = Deck{
-		Name:   deckName,
-		Suits:  []string{"Hearts", "Diamonds", "Clubs", "Spades"},
-		Values: []string{"Two", "Three", "Four", "Five", "Six", "Seven", "Eight", "Nine", "Ten", "Jack", "Queen", "King", "Ace"}}
-
-	// Deck is defined, loop over the deck and associate each value to the suit.
-	for i := 0; i < len(deck.Values); i++ {
-		for n := 0; n < len(deck.Suits); n++ {
-			card := Card{
-				Suit:  deck.Suits[n],
-				Value: deck.Values[i]}
-			cards = append(cards, card)
-
-		}
-	}
-	deck.Cards = cards
+		Name: deckName}
 	return
 }
 
@@ -76,6 +67,12 @@ func (d *Deck) add(s string, v string) {
 		Suit:  s,
 		Value: v}
 	d.Cards = append(d.Cards, card)
+	return
+}
+
+// Add a card object to the deck
+func (d *Deck) addCard(c Card) {
+	d.Cards = append(d.Cards, c)
 	return
 }
 
@@ -113,9 +110,25 @@ func (d *Deck) dealToPlayers(n, p int) {
 }
 
 // DealCard returns a card from the deck, removing it from the source
-// deck, and returns the new size of the deck.
+// deck.
 func (d *Deck) dealCard() Card {
 	var c Card
 	c, d.Cards = d.Cards[len(d.Cards)-1], d.Cards[:len(d.Cards)-1]
 	return c
+}
+
+// contains locates a card in the deck and returning the cards position.
+func (d *Deck) contains(c Card) (bool, int) {
+	for i, card := range d.Cards {
+		if card == c {
+			return true, i
+		}
+	}
+	return false, 0
+}
+
+// Debug prints the current state of the deck
+func (d *Deck) debug() {
+	s, _ := json.Marshal(d)
+	fmt.Println("DEBUG: " + string(s))
 }
