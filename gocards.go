@@ -28,8 +28,10 @@ func main() {
 	c := deck2.dealCard()
 	p, _ := json.Marshal(c)
 	fmt.Println("Dealt:" + string(p))
-	var player1Deck Deck
-	player1Deck = new("Aymon")
+	player1Deck, e := newDeck("Aymon")
+	if e != nil {
+		fmt.Println(e)
+	}
 	player1Deck.debug()
 	player1Deck.addCard(c)
 	player1Deck.debug()
@@ -38,15 +40,16 @@ func main() {
 	fmt.Println("Position: ", test2)
 }
 
-func new(deckName string) (deck Deck) {
+func newDeck(deckName string) (deck Deck, err error) {
 	deck = Deck{
 		Name: deckName}
+	err = nil
 	return
 }
 
 // Initialize returns an instance of a Deck. This method should return a game deck.
 // Currently hardcoded a classic card deck.
-func (d *Deck) initialize(deckName string) {
+func (d *Deck) initialize(deckName string) error {
 	fmt.Println("Creating Deck.")
 
 	d.Name = deckName
@@ -58,7 +61,7 @@ func (d *Deck) initialize(deckName string) {
 			d.add(d.Suits[n], d.Values[i])
 		}
 	}
-	return
+	return nil
 }
 
 // Add a card to the deck
