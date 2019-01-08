@@ -1,4 +1,4 @@
-package main
+package gocards
 
 import (
 	"encoding/json"

@@ -1,8 +1,9 @@
-package main
+package gocards
 
 import "testing"
 
 func TestNew(t *testing.T) {
+	var err error
 	d, err := newDeck("Test")
 	if err != nil {
 		t.Error(err)
@@ -13,6 +14,7 @@ func TestNew(t *testing.T) {
 }
 
 func TestInitialize(t *testing.T) {
+	var err error
 	var d Deck
 	d.initialize("Blackjack")
 	if err != nil {
