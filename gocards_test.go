@@ -4,7 +4,7 @@ import "testing"
 
 func TestNew(t *testing.T) {
 	var err error
-	d, err := newDeck("Test")
+	d, err := NewDeck("Test")
 	if err != nil {
 		t.Error(err)
 	}
@@ -16,7 +16,7 @@ func TestNew(t *testing.T) {
 func TestInitialize(t *testing.T) {
 	var err error
 	var d Deck
-	d.initialize("Blackjack")
+	d.Initialize("Blackjack")
 	if err != nil {
 		t.Error(err)
 	}

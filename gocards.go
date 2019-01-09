@@ -13,6 +13,7 @@ type Card struct {
 }
 
 // Deck can be loaded with multiple types of decks. e.g. a Standard deck or special deck
+// ToDo: Remove Suits and Values/Ranks. Introduce a generator for different deck types.
 type Deck struct {
 	Name   string
 	Cards  []Card
@@ -22,25 +23,25 @@ type Deck struct {
 
 func main() {
 	var deck2 Deck
-	deck2.initialize("Blackjack")
-	deck2.shuffle()
+	deck2.Initialize("Blackjack")
+	deck2.Shuffle()
 	deck2.dealToPlayers(5, 2)
 	c := deck2.dealCard()
 	p, _ := json.Marshal(c)
 	fmt.Println("Dealt:" + string(p))
-	player1Deck, e := newDeck("Aymon")
+	player1Deck, e := NewDeck("Aymon")
 	if e != nil {
 		fmt.Println(e)
 	}
-	player1Deck.debug()
+	player1Deck.Debug()
 	player1Deck.addCard(c)
-	player1Deck.debug()
+	player1Deck.Debug()
 	test, test2 := player1Deck.contains(c)
 	fmt.Println("Card in Deck: ", test)
 	fmt.Println("Position: ", test2)
 }
 
-func newDeck(deckName string) (deck Deck, err error) {
+func NewDeck(deckName string) (deck Deck, err error) {
 	deck = Deck{
 		Name: deckName}
 	err = nil
@@ -49,7 +50,7 @@ func newDeck(deckName string) (deck Deck, err error) {
 
 // Initialize returns an instance of a Deck. This method should return a game deck.
 // Currently hardcoded a classic card deck.
-func (d *Deck) initialize(deckName string) error {
+func (d *Deck) Initialize(deckName string) error {
 	fmt.Println("Creating Deck.")
 
 	d.Name = deckName
@@ -84,7 +85,7 @@ func (d Deck) remove() Deck {
 }
 
 // Shuffle the deck
-func (d *Deck) shuffle() {
+func (d *Deck) Shuffle() {
 	// Pick a random position in the deck and swap it.
 	for i := 1; i < len(d.Cards); i++ {
 		r := rand.Intn(i + 1)
@@ -112,6 +113,14 @@ func (d *Deck) dealToPlayers(n, p int) {
 	return
 }
 
+unc (d *Deck) dealToPlayers(n, p int) {
+	fmt.Println(p)
+	for i := 0; i < n; i++ {
+		fmt.Println(d.Cards[i].Value + " of " + d.Cards[i].Suit)
+	}
+	return
+}
+
 // DealCard returns a card from the deck, removing it from the source
 // deck.
 func (d *Deck) dealCard() Card {
@@ -131,7 +140,42 @@ func (d *Deck) contains(c Card) (bool, int) {
 }
 
 // Debug prints the current state of the deck
-func (d *Deck) debug() {
+func (d *Deck) Debug() {
 	s, _ := json.Marshal(d)
 	fmt.Println("DEBUG: " + string(s))
+}
+
+// GenerateDeck returns a slice of cards to be used in a deck
+func GenerateDeck(d string) []Card {
+	var c []Card
+	switch d {
+	case "hanikalone":
+		fmt.Println("d")
+		c = []Card{
+			{Suit: "Pink", Value: "5"},
+			{Suit: "Pink", Value: "5"},
+			{Suit: "Pink", Value: "5"},
+			{Suit: "Pink", Value: "5"},
+			{Suit: "Pink", Value: "5"},
+			{Suit: "Green", Value: "4"},
+			{Suit: "Green", Value: "4"},
+			{Suit: "Green", Value: "4"},
+			{Suit: "Green", Value: "4"},
+			{Suit: "Orange", Value: "3"},
+			{Suit: "Orange", Value: "3"},
+			{Suit: "Orange", Value: "3"},
+			{Suit: "Blue", Value: "3"},
+			{Suit: "Blue", Value: "3"},
+			{Suit: "Blue", Value: "3"},
+			{Suit: "Red", Value: "2"},
+			{Suit: "Red", Value: "2"},
+			{Suit: "Yellow", Value: "2"},
+			{Suit: "Yellow", Value: "2"},
+			{Suit: "Purple", Value: "2"},
+			{Suit: "Purple", Value: "2"},
+		}
+	default:
+		fmt.Println("Default")
+	}
+	return c
 }
