@@ -21,7 +21,7 @@ func TestInitialize(t *testing.T) {
 		t.Error(err)
 	}
 	if d.Name != "Blackjack" {
-		t.Error("Wrong Name. Was expecting Test but got ", d.Name)
+		t.Error("Wrong Name. Was expecting Blackjack but got ", d.Name)
 	}
 
 }
