@@ -113,14 +113,6 @@ func (d *Deck) dealToPlayers(n, p int) {
 	return
 }
 
-unc (d *Deck) dealToPlayers(n, p int) {
-	fmt.Println(p)
-	for i := 0; i < n; i++ {
-		fmt.Println(d.Cards[i].Value + " of " + d.Cards[i].Suit)
-	}
-	return
-}
-
 // DealCard returns a card from the deck, removing it from the source
 // deck.
 func (d *Deck) dealCard() Card {
