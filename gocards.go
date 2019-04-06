@@ -3,6 +3,7 @@ package gocards
 import (
 	"encoding/json"
 	"fmt"
+	"log"
 	"math/rand"
 )
 
@@ -21,26 +22,7 @@ type Deck struct {
 	Values []string
 }
 
-func main() {
-	var deck2 Deck
-	deck2.Initialize("Blackjack")
-	deck2.Shuffle()
-	deck2.dealToPlayers(5, 2)
-	c := deck2.dealCard()
-	p, _ := json.Marshal(c)
-	fmt.Println("Dealt:" + string(p))
-	player1Deck, e := NewDeck("Aymon")
-	if e != nil {
-		fmt.Println(e)
-	}
-	player1Deck.Debug()
-	player1Deck.addCard(c)
-	player1Deck.Debug()
-	test, test2 := player1Deck.contains(c)
-	fmt.Println("Card in Deck: ", test)
-	fmt.Println("Position: ", test2)
-}
-
+// NewDeck creates a new deck
 func NewDeck(deckName string) (deck Deck, err error) {
 	deck = Deck{
 		Name: deckName}
@@ -51,7 +33,7 @@ func NewDeck(deckName string) (deck Deck, err error) {
 // Initialize returns an instance of a Deck. This method should return a game deck.
 // Currently hardcoded a classic card deck.
 func (d *Deck) Initialize(deckName string) error {
-	fmt.Println("Creating Deck.")
+	log.Print("Creating Deck.")
 
 	d.Name = deckName
 	d.Suits = []string{"Hearts", "Diamonds", "Clubs", "Spades"}
@@ -78,10 +60,6 @@ func (d *Deck) add(s string, v string) {
 func (d *Deck) addCard(c Card) {
 	d.Cards = append(d.Cards, c)
 	return
-}
-
-func (d Deck) remove() Deck {
-	return d
 }
 
 // Shuffle the deck
