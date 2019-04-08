@@ -1,7 +1,6 @@
 package gocards
 
 import (
-	"encoding/json"
 	"fmt"
 	"testing"
 )
@@ -17,7 +16,7 @@ func TestNew(t *testing.T) {
 	}
 }
 
-func TestInitialize(t *testing.T) {
+/* func TestInitialize(t *testing.T) {
 	var err error
 	var d Deck
 	d.Initialize("Blackjack")
@@ -28,9 +27,9 @@ func TestInitialize(t *testing.T) {
 		t.Error("Wrong Name. Was expecting Blackjack but got ", d.Name)
 	}
 
-}
+} */
 
-func TestDealToPlayerApp(t *testing.T) {
+/* func TestDealToPlayerApp(t *testing.T) {
 	var deck2 Deck
 	deck2.Initialize("Blackjack")
 	deck2.Shuffle()
@@ -48,7 +47,7 @@ func TestDealToPlayerApp(t *testing.T) {
 	fmt.Println("Card in Deck: ", test)
 	fmt.Println("Position: ", test2)
 
-}
+} */
 
 func TestGame(t *testing.T) {
 	tesdeck := GenerateDeck("hanikalone")

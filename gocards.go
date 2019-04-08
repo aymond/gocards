@@ -7,7 +7,7 @@ import (
 	"math/rand"
 )
 
-// A Card has a Suit and Value
+// A Card has a Suit and Value.
 type Card struct {
 	Suit  string
 	Value string
@@ -16,10 +16,10 @@ type Card struct {
 // Deck can be loaded with multiple types of decks. e.g. a Standard deck or special deck
 // ToDo: Remove Suits and Values/Ranks. Introduce a generator for different deck types.
 type Deck struct {
-	Name   string
-	Cards  []Card
-	Suits  []string
-	Values []string
+	Name  string
+	Cards []Card
+	/* Suits  []string
+	Values []string */
 }
 
 // NewDeck creates a new deck
@@ -32,11 +32,11 @@ func NewDeck(deckName string) (deck Deck, err error) {
 
 // Initialize populates the given deck with cards.
 // Currently hardcoded a classic card deck.
-// ToDo: Load a deck from a file?
+// ToDo: Load a deck from a file.
 func (d *Deck) Initialize(deckName string) error {
 	log.Print("Creating Deck.")
 
-	d.Name = deckName
+	/* d.Name = deckName
 	d.Suits = []string{"Hearts", "Diamonds", "Clubs", "Spades"}
 	d.Values = []string{"Two", "Three", "Four", "Five", "Six", "Seven", "Eight", "Nine", "Ten", "Jack", "Queen", "King", "Ace"}
 
@@ -44,7 +44,7 @@ func (d *Deck) Initialize(deckName string) error {
 		for n := 0; n < len(d.Suits); n++ {
 			d.add(d.Suits[n], d.Values[i])
 		}
-	}
+	} */
 	return nil
 }
 
