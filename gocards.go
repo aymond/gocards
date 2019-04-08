@@ -30,8 +30,9 @@ func NewDeck(deckName string) (deck Deck, err error) {
 	return
 }
 
-// Initialize returns an instance of a Deck. This method should return a game deck.
+// Initialize populates the given deck with cards.
 // Currently hardcoded a classic card deck.
+// ToDo: Load a deck from a file?
 func (d *Deck) Initialize(deckName string) error {
 	log.Print("Creating Deck.")
 
@@ -47,7 +48,8 @@ func (d *Deck) Initialize(deckName string) error {
 	return nil
 }
 
-// Add a card to the deck
+// Add a card to the deck by giving the suit and value as a string.
+// The card object will be created and appended to the deck.
 func (d *Deck) add(s string, v string) {
 	card := Card{
 		Suit:  s,
@@ -56,13 +58,15 @@ func (d *Deck) add(s string, v string) {
 	return
 }
 
-// Add a card object to the deck
+// Add a card object to the deck by passing in a card object.
+// The card object will be appended to the deck.
 func (d *Deck) addCard(c Card) {
 	d.Cards = append(d.Cards, c)
 	return
 }
 
-// Shuffle the deck
+// Shuffle the deck. Iterate through the deck, pick a random card,
+// and swap the positions of the cards.
 func (d *Deck) Shuffle() {
 	// Pick a random position in the deck and swap it.
 	for i := 1; i < len(d.Cards); i++ {
@@ -74,7 +78,7 @@ func (d *Deck) Shuffle() {
 	return
 }
 
-// Deal the number of cards specified in n
+// Print out to stdout the number of cards specified in n
 func (d *Deck) deal(n int) {
 	for i := 0; i < n; i++ {
 		fmt.Println(d.Cards[i].Value + " of " + d.Cards[i].Suit)
@@ -83,6 +87,7 @@ func (d *Deck) deal(n int) {
 }
 
 // DealToPlayers the number of cards (n) to the number of players (p)
+// TODO
 func (d *Deck) dealToPlayers(n, p int) {
 	fmt.Println(p)
 	for i := 0; i < n; i++ {
@@ -109,7 +114,7 @@ func (d *Deck) contains(c Card) (bool, int) {
 	return false, 0
 }
 
-// Debug prints the current state of the deck
+// Debug prints the current state of the passed deck
 func (d *Deck) Debug() {
 	s, _ := json.Marshal(d)
 	fmt.Println("DEBUG: " + string(s))

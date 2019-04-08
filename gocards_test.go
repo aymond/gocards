@@ -56,9 +56,9 @@ func TestGame(t *testing.T) {
 	// TODO
 }
 
-func TestRemove(t *testing.T) {
+/* func TestRemove(t *testing.T) {
 	var deck Deck
-	
+
 	 := []Card{
 		{Suit: "Pink", Value: "5"},
 		{Suit: "Pink", Value: "5"},
@@ -68,4 +68,4 @@ func TestRemove(t *testing.T) {
 		{Suit: "Green", Value: "4"},
 	}
 
-}
+} */

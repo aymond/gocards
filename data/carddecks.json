@@ -1,0 +1,77 @@
+{
+    "decks": [
+        {
+            "name": "Standard",
+            "type": "Standard",
+            "Suits": [
+                "Hearts",
+                "Diamonds",
+                "Clubs",
+                "Spades"
+            ],
+            "Values": [
+                "Two",
+                "Three",
+                "Four",
+                "Five",
+                "Six",
+                "Seven",
+                "Eight",
+                "Nine",
+                "Ten",
+                "Jack",
+                "Queen",
+                "King",
+                "Ace"
+            ]
+        },
+        {
+            "name": "hanikalone",
+            "type": "fixed",
+            "cards": [
+                {"Suit": "Pink", "Value": "5"
+                },
+                {"Suit": "Pink", "Value": "5"
+                },
+                {"Suit": "Pink", "Value": "5"
+                },
+                {"Suit": "Pink", "Value": "5"
+                },
+                {"Suit": "Pink", "Value": "5"
+                },
+                {"Suit": "Green", "Value": "4"
+                },
+                {"Suit": "Green", "Value": "4"
+                },
+                {"Suit": "Green", "Value": "4"
+                },
+                {"Suit": "Green", "Value": "4"
+                },
+                {"Suit": "Orange", "Value": "3"
+                },
+                {"Suit": "Orange", "Value": "3"
+                },
+                {"Suit": "Orange", "Value": "3"
+                },
+                {"Suit": "Blue", "Value": "3"
+                },
+                {"Suit": "Blue", "Value": "3"
+                },
+                {"Suit": "Blue", "Value": "3"
+                },
+                {"Suit": "Red", "Value": "2"
+                },
+                {"Suit": "Red", "Value": "2"
+                },
+                {"Suit": "Yellow", "Value": "2"
+                },
+                {"Suit": "Yellow", "Value": "2"
+                },
+                {"Suit": "Purple", "Value": "2"
+                },
+                {"Suit": "Purple", "Value": "2"
+                }
+            ]
+        }
+    ]
+}

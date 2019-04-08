@@ -1,0 +1,16 @@
+{
+    "games": [
+        {
+            "name": "blackjack",
+            "deck": "standard"
+        },
+        {
+            "name": "solitaire",
+            "deck": "standard"
+        },
+        {
+            "name": "hanikalone",
+            "deck": "hanikalone"
+        }
+    ]
+}
