@@ -50,8 +50,8 @@ func TestNew(t *testing.T) {
 } */
 
 func TestGame(t *testing.T) {
-	tesdeck := GenerateDeck("hanikalone")
-	fmt.Println(tesdeck)
+	testdeck := GenerateDeck("hanikalone")
+	fmt.Println(testdeck)
 	// TODO
 }
 
