@@ -68,3 +68,8 @@ func TestGame(t *testing.T) {
 	}
 
 } */
+
+func TestLoadDeck(t *testing.T) {
+	fmt.Println("TestLoadDeck")
+	loadDeck()
+}

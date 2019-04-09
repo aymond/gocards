@@ -3,21 +3,22 @@ package gocards
 import (
 	"encoding/json"
 	"fmt"
+	"io/ioutil"
 	"log"
 	"math/rand"
 )
 
 // A Card has a Suit and Value.
 type Card struct {
-	Suit  string
-	Value string
+	Suit  string `json:"suit"`
+	Value string `json:"value"`
 }
 
 // Deck can be loaded with multiple types of decks. e.g. a Standard deck or special deck
 // ToDo: Remove Suits and Values/Ranks. Introduce a generator for different deck types.
 type Deck struct {
-	Name  string
-	Cards []Card
+	Name  string `json:"name"`
+	Cards []Card `json:"cards"`
 	/* Suits  []string
 	Values []string */
 }
@@ -153,4 +154,26 @@ func GenerateDeck(d string) []Card {
 		fmt.Println("Default")
 	}
 	return c
+}
+
+// loadDeck reads a file that contains a deck of cards.
+func loadDeck() {
+
+	file, err := ioutil.ReadFile("data/gamedeck1.json")
+	if err != nil {
+		log.Fatal(err)
+		return
+	}
+
+	fmt.Printf("File contents: %s", file)
+
+	var deck Deck //:= Deck{}
+	err = json.Unmarshal(file, &deck)
+
+	fmt.Println("Name: ", deck.Name)
+	for i := 0; i < len(deck.Cards); i++ {
+		fmt.Println("Suit: ", deck.Cards[i].Suit)
+		fmt.Println("Value: ", deck.Cards[i].Value)
+	}
+
 }

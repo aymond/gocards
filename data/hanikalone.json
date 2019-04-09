@@ -1,0 +1,47 @@
+{
+    "name": "hanikalone",
+    "cards": [
+        {"suit": "pink", "value": "5"
+        },
+        {"suit": "pink", "value": "5"
+        },
+        {"suit": "pink", "value": "5"
+        },
+        {"suit": "pink", "value": "5"
+        },
+        {"suit": "pink", "value": "5"
+        },
+        {"suit": "green", "value": "4"
+        },
+        {"suit": "green", "value": "4"
+        },
+        {"suit": "green", "value": "4"
+        },
+        {"suit": "green", "value": "4"
+        },
+        {"suit": "orange", "value": "3"
+        },
+        {"suit": "orange", "value": "3"
+        },
+        {"suit": "orange", "value": "3"
+        },
+        {"suit": "blue", "value": "3"
+        },
+        {"suit": "blue", "value": "3"
+        },
+        {"suit": "blue", "value": "3"
+        },
+        {"suit": "red", "value": "2"
+        },
+        {"suit": "red", "value": "2"
+        },
+        {"suit": "yellow", "value": "2"
+        },
+        {"suit": "yellow", "value": "2"
+        },
+        {"suit": "purple", "value": "2"
+        },
+        {"suit": "purple", "value": "2"
+        }
+    ]
+}
