@@ -34,7 +34,7 @@ func NewDeck(deckName string) (deck Deck, err error) {
 // Initialize populates the given deck with cards.
 // Currently hardcoded a classic card deck.
 // ToDo: Load a deck from a file.
-func (d *Deck) Initialize(deckName string) error {
+func (d *Deck) Initialize(f string) error {
 	log.Print("Creating Deck.")
 
 	/* d.Name = deckName
@@ -157,9 +157,9 @@ func GenerateDeck(d string) []Card {
 }
 
 // loadDeck reads a file that contains a deck of cards.
-func loadDeck() {
+func loadDeck(f string) {
 
-	file, err := ioutil.ReadFile("data/gamedeck1.json")
+	file, err := ioutil.ReadFile(f)
 	if err != nil {
 		log.Fatal(err)
 		return
