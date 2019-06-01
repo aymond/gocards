@@ -69,7 +69,13 @@ func TestGame(t *testing.T) {
 
 } */
 
+/* func TestLoadDeckFail(t *testing.T) {
+	fmt.Println("TestLoadDeck")
+	loadDeck("TestLoadDeck")
+}
+*/
+
 func TestLoadDeck(t *testing.T) {
 	fmt.Println("TestLoadDeck")
-	loadDeck()
+	loadDeck("data/carddecks.json")
 }
