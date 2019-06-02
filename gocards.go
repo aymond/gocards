@@ -32,11 +32,38 @@ func NewDeck(deckName string) (deck Deck, err error) {
 }
 
 // Initialize populates the given deck with cards.
-// Currently hardcoded a classic card deck.
 // ToDo: Load a deck from a file.
-func (d *Deck) Initialize(f string) error {
-	log.Print("Creating Deck.")
+func (d *Deck) Initialize(f string, t string) error {
+	log.Printf("Creating Deck from type: %s", t)
 
+	//Read the file
+	data, err := ioutil.ReadFile(f)
+	if err != nil {
+		log.Fatal(err)
+		return err
+	}
+
+	fmt.Printf("File contents: %s", data)
+
+	switch t {
+	case "s":
+		// Standard deck
+		log.Println("Standard Deck")
+		// ToDo Load Standard Deck, where we need
+		// to generate a card per suit.
+		loadStandardDeck(*d, data)
+	case "f":
+		// Fixed deck
+		log.Println("Fixed Deck")
+	default:
+		log.Fatalf("Unknown deck type: %q", t)
+
+	}
+	// Unmarshall
+	//err = json.Unmarshal(file, d)
+
+	//fmt.Println(d)
+	//loadDeck(d, f)
 	/* d.Name = deckName
 	d.Suits = []string{"Hearts", "Diamonds", "Clubs", "Spades"}
 	d.Values = []string{"Two", "Three", "Four", "Five", "Six", "Seven", "Eight", "Nine", "Ten", "Jack", "Queen", "King", "Ace"}
@@ -47,6 +74,20 @@ func (d *Deck) Initialize(f string) error {
 		}
 	} */
 	return nil
+}
+
+// Loads a standard deck. Takes a json of
+// values and suits, and generates one value per suit
+// and returns the deck.
+// Input is an existing deck and json string.
+// Output Deck
+func loadStandardDeck(d Deck, data []byte) {
+	fmt.Print(data)
+	/* for i := 0; i < len(d.Values); i++ {
+		for n := 0; n < len(d.Suits); n++ {
+			d.add(d.Suits[n], d.Values[i])
+		}
+	} */
 }
 
 // Add a card to the deck by giving the suit and value as a string.
@@ -157,17 +198,17 @@ func GenerateDeck(d string) []Card {
 }
 
 // loadDeck reads a file that contains a deck of cards.
-func loadDeck(f string) {
+func loadDeck(f string) (Deck, error) {
 
+	var deck Deck //:= Deck{}
 	file, err := ioutil.ReadFile(f)
 	if err != nil {
 		log.Fatal(err)
-		return
+		return deck, err
 	}
 
 	fmt.Printf("File contents: %s", file)
 
-	var deck Deck //:= Deck{}
 	err = json.Unmarshal(file, &deck)
 
 	fmt.Println("Name: ", deck.Name)
@@ -176,4 +217,5 @@ func loadDeck(f string) {
 		fmt.Println("Value: ", deck.Cards[i].Value)
 	}
 
+	return deck, err
 }
