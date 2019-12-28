@@ -82,7 +82,7 @@ func (d *Deck) Initialize(f string, t string) error {
 // Input is an existing deck and json string.
 // Output Deck
 func loadStandardDeck(d Deck, data []byte) {
-	fmt.Print(data)
+	fmt.Printf("%q", data)
 	/* for i := 0; i < len(d.Values); i++ {
 		for n := 0; n < len(d.Suits); n++ {
 			d.add(d.Suits[n], d.Values[i])
