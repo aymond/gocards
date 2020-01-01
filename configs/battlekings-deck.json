@@ -1,0 +1,307 @@
+{
+    "name": "battlekings-deck",
+    "comments": "60 warrior cards. 6 suits each with 10 values.",
+    "type": "fixed",
+    "cards": [
+        {
+            "suit": "yellow",
+            "name": "one",
+            "value": "1"
+        },
+        {
+            "suit": "yellow",
+            "name": "two",
+            "value": "2"
+        },
+        {
+            "suit": "yellow",
+            "name": "three",
+            "value": "3"
+        },
+        {
+            "suit": "yellow",
+            "name": "four",
+            "value": "4"
+        },
+        {
+            "suit": "yellow",
+            "name": "five",
+            "value": "5"
+        },
+        {
+            "suit": "yellow",
+            "name": "six",
+            "value": "6"
+        },
+        {
+            "suit": "yellow",
+            "name": "seven",
+            "value": "7"
+        },
+        {
+            "suit": "yellow",
+            "name": "eight",
+            "value": "8"
+        },
+        {
+            "suit": "yellow",
+            "name": "nine",
+            "value": "9"
+        },
+        {
+            "suit": "yellow",
+            "name": "ten",
+            "value": "10"
+        },
+        {
+            "suit": "blue",
+            "name": "one",
+            "value": "1"
+        },
+        {
+            "suit": "blue",
+            "name": "two",
+            "value": "2"
+        },
+        {
+            "suit": "blue",
+            "name": "three",
+            "value": "3"
+        },
+        {
+            "suit": "blue",
+            "name": "four",
+            "value": "4"
+        },
+        {
+            "suit": "blue",
+            "name": "five",
+            "value": "5"
+        },
+        {
+            "suit": "blue",
+            "name": "six",
+            "value": "6"
+        },
+        {
+            "suit": "blue",
+            "name": "seven",
+            "value": "7"
+        },
+        {
+            "suit": "blue",
+            "name": "eight",
+            "value": "8"
+        },
+        {
+            "suit": "blue",
+            "name": "nine",
+            "value": "9"
+        },
+        {
+            "suit": "blue",
+            "name": "ten",
+            "value": "10"
+        },
+        {
+            "suit": "red",
+            "name": "one",
+            "value": "1"
+        },
+        {
+            "suit": "red",
+            "name": "two",
+            "value": "2"
+        },
+        {
+            "suit": "red",
+            "name": "three",
+            "value": "3"
+        },
+        {
+            "suit": "red",
+            "name": "four",
+            "value": "4"
+        },
+        {
+            "suit": "red",
+            "name": "five",
+            "value": "5"
+        },
+        {
+            "suit": "red",
+            "name": "six",
+            "value": "6"
+        },
+        {
+            "suit": "red",
+            "name": "seven",
+            "value": "7"
+        },
+        {
+            "suit": "red",
+            "name": "eight",
+            "value": "8"
+        },
+        {
+            "suit": "red",
+            "name": "nine",
+            "value": "9"
+        },
+        {
+            "suit": "red",
+            "name": "ten",
+            "value": "10"
+        },
+        {
+            "suit": "orange",
+            "name": "one",
+            "value": "1"
+        },
+        {
+            "suit": "orange",
+            "name": "two",
+            "value": "2"
+        },
+        {
+            "suit": "orange",
+            "name": "three",
+            "value": "3"
+        },
+        {
+            "suit": "orange",
+            "name": "four",
+            "value": "4"
+        },
+        {
+            "suit": "orange",
+            "name": "five",
+            "value": "5"
+        },
+        {
+            "suit": "orange",
+            "name": "six",
+            "value": "6"
+        },
+        {
+            "suit": "orange",
+            "name": "seven",
+            "value": "7"
+        },
+        {
+            "suit": "orange",
+            "name": "eight",
+            "value": "8"
+        },
+        {
+            "suit": "orange",
+            "name": "nine",
+            "value": "9"
+        },
+        {
+            "suit": "orange",
+            "name": "ten",
+            "value": "10"
+        },
+        {
+            "suit": "green",
+            "name": "one",
+            "value": "1"
+        },
+        {
+            "suit": "green",
+            "name": "two",
+            "value": "2"
+        },
+        {
+            "suit": "green",
+            "name": "three",
+            "value": "3"
+        },
+        {
+            "suit": "green",
+            "name": "four",
+            "value": "4"
+        },
+        {
+            "suit": "green",
+            "name": "five",
+            "value": "5"
+        },
+        {
+            "suit": "green",
+            "name": "six",
+            "value": "6"
+        },
+        {
+            "suit": "green",
+            "name": "seven",
+            "value": "7"
+        },
+        {
+            "suit": "green",
+            "name": "eight",
+            "value": "8"
+        },
+        {
+            "suit": "green",
+            "name": "nine",
+            "value": "9"
+        },
+        {
+            "suit": "green",
+            "name": "ten",
+            "value": "10"
+        },
+        {
+            "suit": "purple",
+            "name": "one",
+            "value": "1"
+        },
+        {
+            "suit": "purple",
+            "name": "two",
+            "value": "2"
+        },
+        {
+            "suit": "purple",
+            "name": "three",
+            "value": "3"
+        },
+        {
+            "suit": "purple",
+            "name": "four",
+            "value": "4"
+        },
+        {
+            "suit": "purple",
+            "name": "five",
+            "value": "5"
+        },
+        {
+            "suit": "purple",
+            "name": "six",
+            "value": "6"
+        },
+        {
+            "suit": "purple",
+            "name": "seven",
+            "value": "7"
+        },
+        {
+            "suit": "purple",
+            "name": "eight",
+            "value": "8"
+        },
+        {
+            "suit": "purple",
+            "name": "nine",
+            "value": "9"
+        },
+        {
+            "suit": "purple",
+            "name": "ten",
+            "value": "10"
+        }
+    ]
+}

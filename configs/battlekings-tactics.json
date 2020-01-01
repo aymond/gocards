@@ -1,0 +1,47 @@
+{
+    "name": "battlekings-tactics",
+    "comments": "10 Tactics Cards.",
+    "type": "fixed",
+    "cards": [
+        {
+            "suit": "tactics",
+            "value": "Deserter"
+        },
+        {
+            "suit": "tactics",
+            "value": "Mud"
+        },
+        {
+            "suit": "tactics",
+            "value": "Fog"
+        },
+        {
+            "suit": "tactics",
+            "value": "Alexander"
+        },
+        {
+            "suit": "tactics",
+            "value": "Darius"
+        },
+        {
+            "suit": "tactics",
+            "value": "Traitor"
+        },
+        {
+            "suit": "tactics",
+            "value": "Cavalry"
+        },
+        {
+            "suit": "tactics",
+            "value": "Scout"
+        },
+        {
+            "suit": "tactics",
+            "value": "Shield Bearer"
+        },
+        {
+            "suit": "tactics",
+            "value": "Redeploy"
+        }
+    ]
+}

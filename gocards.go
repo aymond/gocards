@@ -19,8 +19,6 @@ type Card struct {
 type Deck struct {
 	Name  string `json:"name"`
 	Cards []Card `json:"cards"`
-	/* Suits  []string
-	Values []string */
 }
 
 // NewDeck creates a new deck
