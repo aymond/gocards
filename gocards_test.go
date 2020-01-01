@@ -77,6 +77,6 @@ func TestGame(t *testing.T) {
 
 func TestLoadDeck(t *testing.T) {
 	fmt.Println("TestLoadDeck")
-	loadDeck("data/carddecks.json")
+	loadDeck("configs/carddecks.json")
 
 }
