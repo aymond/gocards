@@ -1,4 +1,4 @@
-package gocards
+package main
 
 import (
 	"fmt"
