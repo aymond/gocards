@@ -286,7 +286,7 @@ func (gs *BattleKingsGameState) NewGame(v1 bool) error {
 
 	// Choose random start player 1 or 2
 	rand.Seed(time.Now().UnixNano())
-	gs.playerOnTurn = (rand.Intn(2) + 1)
+	gs.playerOnTurn = rand.Intn(2) + 1
 
 	return nil
 }
