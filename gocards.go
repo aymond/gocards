@@ -3,9 +3,11 @@ package main
 import (
 	"encoding/json"
 	"fmt"
+	"io"
 	"io/ioutil"
 	"log"
 	"math/rand"
+	"net/http"
 	"time"
 )
 
@@ -305,7 +307,40 @@ func game() {
 }
 
 func main() {
+	p("gocards", version(), "started.")
+
+	// Create a new Game State
 	var gs BattleKingsGameState
 	_ = gs.NewGame(true)
 	gs.Debug()
+
+	r := http.NewServeMux()
+	r.HandleFunc("/", homeHandler)
+	log.Fatal(http.ListenAndServe(":8000", r))
+}
+
+// Helper Functions
+
+// version
+func version() string {
+	return "0.0.1"
+}
+
+// Convenience function for printing to stdout
+func p(a ...interface{}) {
+	fmt.Println(a...)
+}
+
+// Handlers
+
+func homeHandler(w http.ResponseWriter, r *http.Request) {
+	//_, err := session(w, r)
+
+	// A very simple health check.
+	w.WriteHeader(http.StatusOK)
+	w.Header().Set("Content-Type", "application/json")
+
+	// In the future we could report back on the status of our DB, or our cache
+	// (e.g. Redis) by performing a simple PING, and include them in the response.
+	io.WriteString(w, `{"alive": true}`)
 }
