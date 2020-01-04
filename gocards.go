@@ -6,7 +6,6 @@ import (
 	"io/ioutil"
 	"log"
 	"math/rand"
-	"net/http"
 	"time"
 )
 
@@ -285,7 +284,9 @@ func (gs *BattleKingsGameState) NewGame(v1 bool) error {
 		gs.moveCard(&gs.gamePile, &gs.playerTwoHand)
 	}
 
-	gs.playerOnTurn = 1
+	// Choose random start player 1 or 2
+	rand.Seed(time.Now().UnixNano())
+	gs.playerOnTurn = (rand.Intn(2) + 1)
 
 	return nil
 }
