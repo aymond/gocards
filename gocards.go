@@ -1,4 +1,4 @@
-package gocards
+package main
 
 import (
 	"encoding/json"
@@ -6,6 +6,7 @@ import (
 	"io/ioutil"
 	"log"
 	"math/rand"
+	"time"
 )
 
 // A Card has a Suit and Value.
@@ -14,13 +15,31 @@ type Card struct {
 	Value string `json:"value"`
 }
 
+// GameState contains all game-state relevant information.
+type BattleKingsGameState struct {
+	gameTick           int     // Count of rounds played
+	playerOneHand      Deck    // State of Player One's hand
+	playerTwoHand      Deck    // State of Player Two's hand
+	discardPile        Deck    // Cards that have been discarded because of Tactics cards
+	variantDiscardPile Deck    // Variant 1: Tactics Cards discarded before game start.
+	tacticsPile        Deck    // Tactics cards that have not yet been drawn.
+	gamePile           Deck    // Game cards that have not yet been drawn.
+	flags              [9]Flag // 9 Flags in the game
+	won                int     // 0 = unresolved, 1 = Player1, 2 = Player2
+	playerOnTurn       int     // 1 = Player 1, 2 = Player 2
+}
+
 // Deck can be loaded with multiple types of decks. e.g. a Standard deck or special deck
 // ToDo: Remove Suits and Values/Ranks. Introduce a generator for different deck types.
 type Deck struct {
 	Name  string `json:"name"`
 	Cards []Card `json:"cards"`
-	/* Suits  []string
-	Values []string */
+}
+
+type Flag struct {
+	playerOnePile Deck
+	playerTwoPile Deck
+	won           int // 0 = unresolved, 1 = Player1, 2 = Player2
 }
 
 // NewDeck creates a new deck
@@ -59,20 +78,6 @@ func (d *Deck) Initialize(f string, t string) error {
 		log.Fatalf("Unknown deck type: %q", t)
 
 	}
-	// Unmarshall
-	//err = json.Unmarshal(file, d)
-
-	//fmt.Println(d)
-	//loadDeck(d, f)
-	/* d.Name = deckName
-	d.Suits = []string{"Hearts", "Diamonds", "Clubs", "Spades"}
-	d.Values = []string{"Two", "Three", "Four", "Five", "Six", "Seven", "Eight", "Nine", "Ten", "Jack", "Queen", "King", "Ace"}
-
-	for i := 0; i < len(d.Values); i++ {
-		for n := 0; n < len(d.Suits); n++ {
-			d.add(d.Suits[n], d.Values[i])
-		}
-	} */
 	return nil
 }
 
@@ -107,14 +112,27 @@ func (d *Deck) addCard(c Card) {
 	return
 }
 
-// Shuffle the deck. Iterate through the deck, pick a random card,
-// and swap the positions of the cards.
+// Shuffle the deck.
 func (d *Deck) Shuffle() {
 	// Pick a random position in the deck and swap it.
+	rand.Seed(time.Now().UnixNano())
 	for i := 1; i < len(d.Cards); i++ {
 		r := rand.Intn(i + 1)
 		if i != r {
 			d.Cards[r], d.Cards[i] = d.Cards[i], d.Cards[r]
+		}
+	}
+	return
+}
+
+// Shuffle the deck.
+func (gs *BattleKingsGameState) Shuffle(p Deck) {
+	// Pick a random position in the deck and swap it.
+	rand.Seed(time.Now().UnixNano())
+	for i := 1; i < len(p.Cards); i++ {
+		r := rand.Intn(i + 1)
+		if i != r {
+			p.Cards[r], p.Cards[i] = p.Cards[i], p.Cards[r]
 		}
 	}
 	return
@@ -138,12 +156,19 @@ func (d *Deck) dealToPlayers(n, p int) {
 	return
 }
 
-// DealCard returns a card from the deck, removing it from the source
-// deck.
+// DealCard returns a card from the deck, removing it from the source deck.
 func (d *Deck) dealCard() Card {
 	var c Card
 	c, d.Cards = d.Cards[len(d.Cards)-1], d.Cards[:len(d.Cards)-1]
 	return c
+}
+
+// moveCard moves a card (c) from one deck (d1) to another deck (d2).
+func (gs *BattleKingsGameState) moveCard(d1 *Deck, d2 *Deck) {
+	var c Card
+	c, d1.Cards = d1.Cards[len(d1.Cards)-1], d1.Cards[:len(d1.Cards)-1]
+	d2.Cards = append(d2.Cards, c)
+	//return c
 }
 
 // contains locates a card in the deck and returning the cards position.
@@ -160,6 +185,11 @@ func (d *Deck) contains(c Card) (bool, int) {
 func (d *Deck) Debug() {
 	s, _ := json.Marshal(d)
 	fmt.Println("DEBUG: " + string(s))
+}
+
+func (gs *BattleKingsGameState) Debug() {
+	//s, _ := json.Marshal(gs.gamePile)
+	fmt.Printf("DEBUG: %+v", gs)
 }
 
 // GenerateDeck returns a slice of cards to be used in a deck
@@ -218,4 +248,64 @@ func loadDeck(f string) (Deck, error) {
 	}
 
 	return deck, err
+}
+
+// LoadDeck reads the deck
+func (gs *BattleKingsGameState) LoadDeck(f string, d *Deck) error {
+	fileData, err := ioutil.ReadFile(f)
+	if err != nil {
+		log.Fatal(err)
+		return err
+	}
+
+	err = json.Unmarshal([]byte(fileData), d)
+	return nil
+}
+
+// NewGame creates a new game with a default state.
+func (gs *BattleKingsGameState) NewGame(v1 bool) error {
+	// Load the Game Deck
+	_ = gs.LoadDeck("configs\\battlekings-deck.json", &gs.gamePile)
+	_ = gs.LoadDeck("configs\\battlekings-tactics.json", &gs.tacticsPile)
+
+	// Shuffle the decks
+	gs.Shuffle(gs.gamePile)
+	gs.Shuffle(gs.tacticsPile)
+
+	if v1 == true {
+		// Move two Tactics cards to the Discard Pile
+		gs.moveCard(&gs.tacticsPile, &gs.variantDiscardPile)
+		gs.moveCard(&gs.tacticsPile, &gs.variantDiscardPile)
+	}
+
+	// Deal 7 cards to each player.
+	for i := 1; i <= 7; i++ {
+		gs.moveCard(&gs.gamePile, &gs.playerOneHand)
+		gs.moveCard(&gs.gamePile, &gs.playerTwoHand)
+	}
+
+	// Choose random start player 1 or 2
+	rand.Seed(time.Now().UnixNano())
+	gs.playerOnTurn = rand.Intn(2) + 1
+
+	return nil
+}
+
+func game() {
+	/*mux := http.NewServeMux()
+	mux.Handle("/public/", http.StripPrefix("/public/", http.FileServer(http.Dir(dir+"/public"))))
+	mux.HandleFunc("/start", start)
+	mux.HandleFunc("/frame", getFrame)
+	mux.HandleFunc("/key", captureKeys)
+	server := &http.Server{
+		Addr:    "127.0.0.1:12346",
+		Handler: mux,
+	}
+	server.ListenAndServe()*/
+}
+
+func main() {
+	var gs BattleKingsGameState
+	_ = gs.NewGame(true)
+	gs.Debug()
 }
