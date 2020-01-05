@@ -1,13 +1,12 @@
 package main
 
 import (
+	"database/sql"
 	"encoding/json"
 	"fmt"
-	"io"
 	"io/ioutil"
 	"log"
 	"math/rand"
-	"net/http"
 	"time"
 )
 
@@ -17,7 +16,7 @@ type Card struct {
 	Value string `json:"value"`
 }
 
-// GameState contains all game-state relevant information.
+// BattleKingsGameState contains all game-state relevant information.
 type BattleKingsGameState struct {
 	gameTick           int     // Count of rounds played
 	playerOneHand      Deck    // State of Player One's hand
@@ -29,6 +28,10 @@ type BattleKingsGameState struct {
 	flags              [9]Flag // 9 Flags in the game
 	won                int     // 0 = unresolved, 1 = Player1, 2 = Player2
 	playerOnTurn       int     // 1 = Player 1, 2 = Player 2
+	uuid               string
+	ID                 int
+	gameName           string
+	createdAt          time.Time
 }
 
 // Deck can be loaded with multiple types of decks. e.g. a Standard deck or special deck
@@ -38,11 +41,15 @@ type Deck struct {
 	Cards []Card `json:"cards"`
 }
 
+// Flag is what the players are battling for.
 type Flag struct {
 	playerOnePile Deck
 	playerTwoPile Deck
 	won           int // 0 = unresolved, 1 = Player1, 2 = Player2
 }
+
+// Db stores the game state.
+var Db *sql.DB
 
 // NewDeck creates a new deck
 func NewDeck(deckName string) (deck Deck, err error) {
@@ -189,6 +196,7 @@ func (d *Deck) Debug() {
 	fmt.Println("DEBUG: " + string(s))
 }
 
+// Debug prints the current state of the passed deck
 func (gs *BattleKingsGameState) Debug() {
 	//s, _ := json.Marshal(gs.gamePile)
 	fmt.Printf("DEBUG: %+v", gs)
@@ -264,11 +272,30 @@ func (gs *BattleKingsGameState) LoadDeck(f string, d *Deck) error {
 	return nil
 }
 
+// SaveState writes the game state to the database.
+func (gs *BattleKingsGameState) SaveState() error {
+	var err error
+	Db, err = sql.Open("sqlite3", "dbname=game.db")
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	statement := "insert into games (uuid, game_name, created_at) values ($1, $2, $3)" // returning id, uuid, game_name, created_at"
+	stmt, err := Db.Prepare(statement)
+	if err != nil {
+		return err
+	}
+	defer stmt.Close()
+	// use QueryRow to return a row and scan the returned id into the Session struct
+	err = stmt.QueryRow(createUUID(), "BattleKings", time.Now()).Scan(&gs.ID, &gs.uuid, &gs.gameName, &gs.createdAt)
+	return err
+}
+
 // NewGame creates a new game with a default state.
 func (gs *BattleKingsGameState) NewGame(v1 bool) error {
 	// Load the Game Deck
-	_ = gs.LoadDeck("configs\\battlekings-deck.json", &gs.gamePile)
-	_ = gs.LoadDeck("configs\\battlekings-tactics.json", &gs.tacticsPile)
+	_ = gs.LoadDeck("configs/battlekings-deck.json", &gs.gamePile)
+	_ = gs.LoadDeck("configs/battlekings-tactics.json", &gs.tacticsPile)
 
 	// Shuffle the decks
 	gs.Shuffle(gs.gamePile)
@@ -291,56 +318,4 @@ func (gs *BattleKingsGameState) NewGame(v1 bool) error {
 	gs.playerOnTurn = rand.Intn(2) + 1
 
 	return nil
-}
-
-func game() {
-	/*mux := http.NewServeMux()
-	mux.Handle("/public/", http.StripPrefix("/public/", http.FileServer(http.Dir(dir+"/public"))))
-	mux.HandleFunc("/start", start)
-	mux.HandleFunc("/frame", getFrame)
-	mux.HandleFunc("/key", captureKeys)
-	server := &http.Server{
-		Addr:    "127.0.0.1:12346",
-		Handler: mux,
-	}
-	server.ListenAndServe()*/
-}
-
-func main() {
-	p("gocards", version(), "started.")
-
-	// Create a new Game State
-	var gs BattleKingsGameState
-	_ = gs.NewGame(true)
-	gs.Debug()
-
-	r := http.NewServeMux()
-	r.HandleFunc("/", homeHandler)
-	log.Fatal(http.ListenAndServe(":8000", r))
-}
-
-// Helper Functions
-
-// version
-func version() string {
-	return "0.0.1"
-}
-
-// Convenience function for printing to stdout
-func p(a ...interface{}) {
-	fmt.Println(a...)
-}
-
-// Handlers
-
-func homeHandler(w http.ResponseWriter, r *http.Request) {
-	//_, err := session(w, r)
-
-	// A very simple health check.
-	w.WriteHeader(http.StatusOK)
-	w.Header().Set("Content-Type", "application/json")
-
-	// In the future we could report back on the status of our DB, or our cache
-	// (e.g. Redis) by performing a simple PING, and include them in the response.
-	io.WriteString(w, `{"alive": true}`)
 }
