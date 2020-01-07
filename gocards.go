@@ -16,7 +16,7 @@ type Card struct {
 	Value string `json:"value"`
 }
 
-// BattleKingsGameState contains all game-state relevant information.
+// The BattleKingsGameState contains all game-state relevant information.
 type BattleKingsGameState struct {
 	gameTick           int     // Count of rounds played
 	playerOneHand      Deck    // State of Player One's hand
@@ -46,6 +46,13 @@ type Flag struct {
 	playerOnePile Deck
 	playerTwoPile Deck
 	won           int // 0 = unresolved, 1 = Player1, 2 = Player2
+}
+
+// GameList used for listing games.
+type GameList struct {
+	uuid      string
+	gameName  string
+	createdAt time.Time
 }
 
 // Db stores the game state.
@@ -273,12 +280,12 @@ func (gs *BattleKingsGameState) LoadDeck(f string, d *Deck) error {
 }
 
 // SaveState writes the game state to the database.
-func (gs *BattleKingsGameState) SaveState() error {
-	var err error
+func (gs *BattleKingsGameState) newGame() error {
+	/* var err error
 	Db, err = sql.Open("sqlite3", "dbname=game.db")
 	if err != nil {
 		log.Fatal(err)
-	}
+	} */
 
 	statement := "insert into games (uuid, game_name, created_at) values ($1, $2, $3)" // returning id, uuid, game_name, created_at"
 	stmt, err := Db.Prepare(statement)
@@ -293,6 +300,7 @@ func (gs *BattleKingsGameState) SaveState() error {
 
 // NewGame creates a new game with a default state.
 func (gs *BattleKingsGameState) NewGame(v1 bool) error {
+	var err error
 	// Load the Game Deck
 	_ = gs.LoadDeck("configs/battlekings-deck.json", &gs.gamePile)
 	_ = gs.LoadDeck("configs/battlekings-tactics.json", &gs.tacticsPile)
@@ -317,5 +325,37 @@ func (gs *BattleKingsGameState) NewGame(v1 bool) error {
 	rand.Seed(time.Now().UnixNano())
 	gs.playerOnTurn = rand.Intn(2) + 1
 
-	return nil
+	/* Db, err = sql.Open("sqlite3", "dbname=game.db")
+	if err != nil {
+		log.Fatal(err)
+	} */
+
+	statement := "insert into games (uuid, game_name, created_at) values ($1, $2, $3)" // returning id, uuid, game_name, created_at"
+	stmt, err := Db.Prepare(statement)
+	if err != nil {
+		return err
+	}
+	defer stmt.Close()
+	// use QueryRow to return a row and scan the returned id into the Session struct
+	err = stmt.QueryRow(createUUID(), "BattleKings", time.Now()).Scan(&gs.ID, &gs.uuid, &gs.gameName, &gs.createdAt)
+	return err
+}
+
+// ListGames returns all games.
+func ListGames() (games []GameList, err error) {
+
+	rows, err := Db.Query("SELECT uuid, game_name, created_at FROM games ORDER BY created_at DESC")
+	if err != nil {
+		return
+	}
+	for rows.Next() {
+		game := GameList{}
+		err = rows.Scan(&game.uuid, &game.gameName, &game.createdAt)
+		if err != nil {
+			return
+		}
+		games = append(games, game)
+	}
+	rows.Close()
+	return
 }

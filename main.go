@@ -1,7 +1,7 @@
 package main
 
 import (
-	"io"
+	"html/template"
 	"log"
 	"net/http"
 )
@@ -14,7 +14,7 @@ func main() {
 	var gs BattleKingsGameState
 
 	_ = gs.NewGame(true)
-	_ = gs.SaveState()
+	//_ = gs.SaveState()
 	//gs.Debug()
 
 	r := http.NewServeMux()
@@ -26,12 +26,10 @@ func main() {
 
 func homeHandler(w http.ResponseWriter, r *http.Request) {
 	//_, err := session(w, r)
-
+	gamelist, _ := ListGames()
+	p(gamelist)
 	// A very simple health check.
 	w.WriteHeader(http.StatusOK)
-	// w.Header().Set("Content-Type", "application/json")
-	// In the future we could report back on the status of our DB, or our cache
-	// (e.g. Redis) by performing a simple PING, and include them in the response.
-	io.WriteString(w, "<!DOCTYPE html><html><body>Hello, World!")
-	io.WriteString(w, "</body></html>")
+	t, _ := template.ParseGlob("templates/*.html")
+	t.ExecuteTemplate(w, "home", gamelist)
 }
