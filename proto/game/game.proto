@@ -1,0 +1,21 @@
+syntax = "proto3";
+
+package game; 
+
+service GameService {
+  rpc CreateGame(Game) returns (Response) {}
+  rpc GetGames(GetRequest) returns (Response) {}
+}
+
+message Game {
+  string id = 1;
+  string description = 2;
+  string user_id = 3;
+}
+
+message GetRequest {}
+
+message Response {
+  bool created = 1;
+  Game game = 2;
+}
